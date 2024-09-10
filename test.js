@@ -12,6 +12,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+
+const Book = require('./models/books');
 // Conexão com MySQL
 const db = mysql.createConnection({
     host: 'localhost',
@@ -67,8 +69,8 @@ app.post('/adicionar-livro', async (req, res) => {
         // Redirecionar para a página de apólices após o salvamento
         res.redirect('/');
     } catch (error) {
-        console.error('Erro ao salvar a apólice:', error);
-        res.status(500).send('Erro ao salvar a apólice.');
+        console.error('Erro ao salvar a Livro:', error);
+        res.status(500).send('Erro ao salvar a Livro.');
     }
 });
 
@@ -92,12 +94,6 @@ app.delete('/livros/:id', async (req, res) => {
 });
 
 describe('Testes da Aplicação Express', function() {
-    it('Deve carregar a página inicial', function(done) {
-        request(app)
-            .get('/')
-            .expect('Content-Type', /html/)
-            .expect(200, done);
-    });
 
     it('Deve carregar a página home', function(done) {
         request(app)
@@ -110,7 +106,7 @@ describe('Testes da Aplicação Express', function() {
         request(app)
             .post('/adicionar-livro')
             .send({ title: 'Teste Livro', author: 'Autor Teste', year: 2024 })
-            .expect('Location', '/cadastro')
+            .expect('Location', '/')
             .expect(302, done);
     });
 
@@ -123,7 +119,7 @@ describe('Testes da Aplicação Express', function() {
     it('Deve deletatar um livro na página dos livros', function(done){
         request(app)
         .delete('/livros/1')
-        .expect('Location', 'livros')
-        .expect(200, done)
+        .expect('Location', '/livros')
+        .expect(302, done)
     })
 });

@@ -110,7 +110,7 @@ app.delete('/livros/:id', async (req, res) => {
     }
 });
 
-
+module.exports = app;
 
 // Iniciando o servidor
 app.listen(port, () => {
